@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include <sdlib.h>
+#include <stdlib.h>
 #include <string.h>
 
 struct datos{
@@ -24,7 +24,10 @@ struct lista{
 typedef struct lista nodito;
 
 struct elemento{
-	info alumno;
+	int cuenta;
+	char nombre[40];
+	char carrera[80];
+	float promedio;
 	struct elemento *izq, *der;
 };
 typedef struct elemento nodo;
