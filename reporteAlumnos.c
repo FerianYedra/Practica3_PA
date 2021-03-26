@@ -8,6 +8,7 @@
 #include "def.h"
 extern nodo *crearListaDoble(nodo *pt, info dat;);
 extern void imprimirLista(nodo *pt);
+extern void imprimirFIFO(nodito *pt);
 
 int main(int argc, char *argv[]){
 	info dat;
@@ -34,6 +35,7 @@ int main(int argc, char *argv[]){
 	}
 	printf("Se leyeron %i alumnos\n", i);
 	imprimirLista(inicio);
+	imprimirFIFO(inicio->fifo);
 
 	return 0;
 }

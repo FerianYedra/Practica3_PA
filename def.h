@@ -18,7 +18,10 @@ struct datos{
 typedef struct datos info;
 
 struct lista{
-	info alumno;
+	int cuenta;
+	char nombre[40];
+	char carrera[80];
+	float promedio;
 	struct lista *next;
 };
 typedef struct lista nodito;
@@ -29,5 +32,6 @@ struct elemento{
 	char carrera[80];
 	float promedio;
 	struct elemento *izq, *der;
+	nodito *fifo;
 };
 typedef struct elemento nodo;

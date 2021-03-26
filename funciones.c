@@ -8,6 +8,46 @@
  * @return
  */
 
+extern nodito *anexarFIFO(nodito *pt, info dat){
+	nodito *aux, *mover = pt;
+	
+	aux = (nodito *)malloc(sizeof(nodito));
+	if(aux == NULL){
+		printf("Error: No hay memoria disponible\n");
+		exit(1);
+	}
+	aux->cuenta = dat.cta;
+	strcpy(aux->nombre, dat.nom);
+	strcpy(aux->carrera, dat.car);
+	aux->promedio = dat.prom;
+	if(pt == NULL){
+		pt = aux;
+	}else{
+		while(mover->next != NULL){
+			mover = mover->next;
+		}
+		mover->next = aux;
+	}
+	return pt;
+}
+
+extern int revisarMaterias(nodo *pt, info dat){
+	nodo *aux = pt;
+	int i = 0;
+
+	do{
+		if(strcmp(dat.car, pt->carrera) == 0){
+			printf("Carrera %s  repetida, anexando FIFO de %s\n", dat.car, pt->carrera);//Print de prueba
+			pt->fifo = anexarFIFO(pt->fifo, dat);
+			i = 1;
+		}
+		pt = pt->der;
+	}while(pt->der != aux);
+	pt = aux;
+
+	return i;
+}
+
 extern nodo *crearListaDoble(nodo *pt, info dat)
 {
   nodo *nuevo, *aux = pt;
@@ -28,12 +68,15 @@ extern nodo *crearListaDoble(nodo *pt, info dat)
 	  nuevo->der=pt;
 	  nuevo->izq=pt;
   }else{
-	  //TODO Revisar que al mandar no este repetida la carrera, incluir FIFO
-	  aux=pt->izq;
-	  nuevo->izq=aux;
-	  nuevo->der=pt;
-	  pt->izq=nuevo;
-	  aux->der=nuevo;
+	  if(revisarMaterias(pt, dat) == 1){
+		free(nuevo);
+	  }else{
+	  	aux=pt->izq;
+          	nuevo->izq=aux;
+          	nuevo->der=pt;
+          	pt->izq=nuevo;
+          	aux->der=nuevo;
+	  }
     }
 
   return pt;
@@ -62,6 +105,16 @@ extern void imprimirLista(nodo *pt)
   return;
 }
 
+extern void imprimirFIFO(nodito *pt){
+	printf("Imprimiendo carrera\n");
+	while(pt != NULL){
+		printf("\n----------------\n %i\n %s\n %s\n %f\n",pt->cuenta,pt->nombre,pt->carrera,pt->promedio);
+		pt = pt->next;
+	}
+	printf("Fin de la lista\n");
+
+	return;
+}
 /*extern void imprimirInfoNodo(navegador datos)
 {
   int cuenta;
