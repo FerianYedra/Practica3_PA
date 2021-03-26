@@ -27,11 +27,17 @@ struct lista{
 typedef struct lista nodito;
 
 struct elemento{
-	int cuenta;
-	char nombre[40];
+	char mejor[40];
 	char carrera[80];
-	float promedio;
+	int alumnos;
+	int prom;
 	struct elemento *izq, *der;
 	nodito *fifo;
 };
 typedef struct elemento nodo;
+
+struct estBuscador{
+	nodo *pos;
+	nodito *list;
+};
+typedef struct estBuscador navegador;

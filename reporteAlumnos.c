@@ -7,14 +7,16 @@
 
 #include "def.h"
 extern nodo *crearListaDoble(nodo *pt, info dat;);
-extern void imprimirLista(nodo *pt);
 extern void imprimirFIFO(nodito *pt);
+extern void fetchInfo(nodo *pt);
 
 int main(int argc, char *argv[]){
 	info dat;
 	nodo *inicio;
 	FILE *fp;
 	int i = 0, j;
+	navegador nav;
+	char opcion;
 
 	inicio = NULL;
 	fp = fopen(argv[1], "r");
@@ -34,8 +36,15 @@ int main(int argc, char *argv[]){
 		fclose(fp);
 	}
 	printf("Se leyeron %i alumnos\n", i);
-	imprimirLista(inicio);
 	imprimirFIFO(inicio->fifo);
+	fetchInfo(inicio);
+	imprimirFIFO(inicio->fifo);
+	//Implementar Navegador
+	nav.pos = inicio;
+	nav.list = inicio->fifo;
+	while(opcion != 's'){
+		fetchInfo(inicio);
+	}
 
 	return 0;
 }
