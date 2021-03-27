@@ -1,8 +1,8 @@
 /**
- * @flie
- * @brief
- * @author
- * @date
+ * @flie def.h
+ * @brief Esta cabecera contiene las estructuras y bibliotecas usadas para reporteAlumnos.c
+ * @author Fernando Yedra, Nancy Melina
+ * @date 26/03/2021
  */
 
 #include <stdio.h>

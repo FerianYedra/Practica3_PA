@@ -1,15 +1,15 @@
 #include "def.h"
 /**
- * @file
- * @brief
- * @author
- * @date
- * @param
- * @return
+ * @file funciones.c
+ * @brief Esta funcion agrega los alumnos leídos a una lista FIFO en la lista circular doble.
+ * @author Fernando Yedra
+ * @date 26/03/2021
+ * @param pt	Es la información de la lista FIFO
+ * @param dat	Contiene la información del alumno
+ * @return pt	Es el inicio de la lista FIFO
  */
 extern nodito *anexarFIFO(nodito *pt, info dat){
 	nodito *aux, *mover;
-	printf("Anexando FIFO\n");
 	mover = pt;
 	aux = (nodito *)malloc(sizeof(nodito));
 	if(aux == NULL){
@@ -33,13 +33,21 @@ extern nodito *anexarFIFO(nodito *pt, info dat){
 	return pt;
 }
 
+/**
+ * @brief Esta función revisa que la carrera del alumno ya exista, manda añadir al FIFO si encuentra.
+ * @author Fernando Yedra
+ * @date 26/03/2021
+ * @param pt	Es la referencia a la lista circular
+ * @param dat	Contiene la información del alumno
+ * @reuturn 0	Si no encuentra la carrera en la lista, 1 Si encuentra la carrera
+ */
+
 extern int revisarMaterias(nodo *pt, info dat){
 	nodo *aux = pt;
 	int i = 0;
 	
 	do{
 		if(strcmp(dat.car, pt->carrera) == 0){
-			printf("Carrera %s  repetida, anexando FIFO de %s\n", dat.car, pt->carrera);//Print de prueba
 			pt->fifo = anexarFIFO(pt->fifo, dat);
 			i = 1;
 		}
@@ -49,6 +57,16 @@ extern int revisarMaterias(nodo *pt, info dat){
 
 	return i;
 }
+
+/**
+ * @brief Esta función manda a anaexar a la lista circular, revisa que si la carrera esta repetida
+ * 	  no se agregue el nodo.
+ * @author Fernando Yedra, Nancy Melina
+ * @date 26/03/2021
+ * @param pt	Es la referencia al incio de la lista
+ * @param dat	Contiene la información del alumno
+ * @return pt	Regresa el inico de la lista
+ */
 
 extern nodo *crearListaDoble(nodo *pt, info dat)
 {
@@ -84,6 +102,14 @@ extern nodo *crearListaDoble(nodo *pt, info dat)
   return pt;
 }
 
+/**
+ * @brief Esta función manda a imprimir la lista fifo que se encuentre en un nodo.
+ * @author Fernando Yedra, Nancy Melina
+ * @date 26/03/2021
+ * @param pt	Es la referencia al inicio de la lista FIFO en un nodo
+ * @return void
+ */
+
 extern void imprimirFIFO(nodito *pt){
 	nodito *aux = pt;
 	printf("Imprimiendo carrera\n");
@@ -96,28 +122,63 @@ extern void imprimirFIFO(nodito *pt){
 	return;
 }
 
-void fetchInfo(nodo *pt){
-	nodo *inicio = pt;
+/**
+ * @brief Esta función manda a evaluar los datos en la lista FIFO para agregarlos al nodo.
+ * @author Fernando Yedra
+ * @date 26/03/2021
+ * @param pt	Es la referencia al nodo acutal
+ * @return void
+ */
+
+extern void fetchInfo(nodo *pt){
+	nodito *inicioFIFO = pt->fifo;
 	float sum = 0.0;
 	float promPasado = pt->fifo->promedio;
 	
+	pt->alumnos = 0;
 	nodo *aux = pt;
 	while(aux->fifo != NULL){
-		printf("Fetching...\n");
 		pt->alumnos++;
-		printf("Alumno sumado\n");
 		sum += pt->fifo->promedio;
-		printf("promedio añadido\n");
 		if(pt->fifo->promedio >= promPasado){
 			strcpy(pt->mejor, pt->fifo->nombre);
-			printf("mejor nombre cambiado\n");
 		}
 		promPasado = pt->fifo->promedio;
 		aux->fifo = aux->fifo->next;
 	}
-	pt->prom = sum/pt->alumnos;
-	pt = inicio;
-	printf("Saliendo de fetch\n");
+	pt->fifo = inicioFIFO;
+	pt->prom = sum/(float)pt->alumnos;
 	
+	return;
+}
+
+/**
+ * @brief Esta función manda a crear un archivo de nombre "listas.txt" con los datos de la estrucutra
+ * @author Fernando Yedra, Nancy Melina
+ * @date 26/03/2021
+ * @param pt	Es la referencia al inicio de la lista circular.
+ * @return void
+ */
+
+extern void generarReporte(nodo *pt){
+	nodo *aux = pt;
+	FILE *fp;
+
+	fp = fopen("listas.txt", "w");
+	if (fp == NULL) {
+		printf("Error: Archivo no disponible\n");
+		exit(1);
+	}
+	do{
+		fetchInfo(aux);
+		fprintf(fp, "%s\t%i\t%f\t%s\n", aux->carrera, aux->alumnos, aux->prom, aux->mejor);
+		while(aux->fifo != NULL){
+			fprintf(fp, "%i\t%s\t%f\n", aux->fifo->cuenta, aux->fifo->nombre, aux->fifo->promedio);
+			aux->fifo = aux->fifo->next;
+		}
+		aux = aux->izq;
+	}while (aux->izq != pt);
+	fclose(fp);
+
 	return;
 }
