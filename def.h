@@ -30,7 +30,7 @@ struct elemento{
 	char mejor[40];
 	char carrera[80];
 	int alumnos;
-	int prom;
+	float prom;
 	struct elemento *izq, *der;
 	nodito *fifo;
 };

@@ -85,10 +85,11 @@ extern nodo *crearListaDoble(nodo *pt, info dat)
 }
 
 extern void imprimirFIFO(nodito *pt){
+	nodito *aux = pt;
 	printf("Imprimiendo carrera\n");
-	while(pt != NULL){
-		printf("\n----------------\n %i\n %s\n %s\n %f\n",pt->cuenta,pt->nombre,pt->carrera,pt->promedio);
-		pt = pt->next;
+	while(aux != NULL){
+		printf("\n----------------\n %i\n %s\n %s\n %f\n",aux->cuenta,aux->nombre,aux->carrera,aux->promedio);
+		aux = aux->next;
 	}
 	printf("Fin de la lista\n");
 
@@ -96,8 +97,8 @@ extern void imprimirFIFO(nodito *pt){
 }
 
 void fetchInfo(nodo *pt){
-	nodito *aux = pt;
-	float sum = 0;
+	nodo *inicio = pt;
+	float sum = 0.0;
 	float promPasado = pt->fifo->promedio;
 	
 	nodo *aux = pt;
@@ -107,7 +108,7 @@ void fetchInfo(nodo *pt){
 		printf("Alumno sumado\n");
 		sum += pt->fifo->promedio;
 		printf("promedio añadido\n");
-		if(pt->fifo->promedio > promPasado){
+		if(pt->fifo->promedio >= promPasado){
 			strcpy(pt->mejor, pt->fifo->nombre);
 			printf("mejor nombre cambiado\n");
 		}
@@ -115,7 +116,8 @@ void fetchInfo(nodo *pt){
 		aux->fifo = aux->fifo->next;
 	}
 	pt->prom = sum/pt->alumnos;
-	pt = aux;
+	pt = inicio;
 	printf("Saliendo de fetch\n");
+	
 	return;
 }

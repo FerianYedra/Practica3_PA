@@ -38,12 +38,27 @@ int main(int argc, char *argv[]){
 	printf("Se leyeron %i alumnos\n", i);
 	imprimirFIFO(inicio->fifo);
 	fetchInfo(inicio);
-	imprimirFIFO(inicio->fifo);
 	//Implementar Navegador
+	printf("prom: %f\n", inicio->prom);
 	nav.pos = inicio;
-	nav.list = inicio->fifo;
+	nav.list = nav.pos->fifo;
 	while(opcion != 's'){
 		fetchInfo(inicio);
+		printf("+++++++Menu++++++\n");
+		printf("Estas en: %s\n", nav.pos->carrera);
+		printf("Tiene: %i alumnos\n", nav.pos->alumnos);
+		printf("Promedio general: %f\n", nav.pos->prom);
+		printf("El mejor alumno es: %s\n", nav.pos->mejor);
+		printf("Seleccionar opción: ");
+		scanf(" %c", &opcion);
+		switch(opcion){
+			case 's':
+				printf("Saliendo...\n");
+				break;
+			default:
+				printf("Opcion invalida\n");
+				break;
+		}
 	}
 
 	return 0;
